@@ -28,6 +28,7 @@
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.38.0",
     "vite": "beta",
+    "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-vue-devtools": "^8.0.5"
   }
 }
