@@ -4,7 +4,8 @@
       <div class="hero-content">
         <!-- Badge -->
         <div class="hero-badge">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="star-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
             <path d="M10 2L12.5 7.5L18 8.5L14 13L15 18.5L10 16L5 18.5L6 13L2 8.5L7.5 7.5L10 2Z" fill="#2B86F5" />
           </svg>
           <span>Where Events Come Alive</span>
@@ -106,6 +107,21 @@
 
 .hero-badge svg {
   flex-shrink: 0;
+}
+
+.star-icon {
+  animation: spinStar 3s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spinStar {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .hero-heading {
