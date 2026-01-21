@@ -14,9 +14,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],
       manifest: {
-        name: 'My Vue PWA',
-        short_name: 'VuePWA',
-        description: 'My Progressive Web App built with Vue',
+        name: 'Evento',
+        short_name: 'Evento',
+        description: 'Create Unforgettable Events Effortlessly',
         theme_color: '#42b883',
         background_color: '#ffffff',
         display: 'standalone',
