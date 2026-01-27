@@ -105,23 +105,23 @@
           <div class="form-grid">
             <div class="form-group">
               <label for="firstName">First Name</label>
-              <input type="text" id="firstName" v-model="formData.firstName" placeholder="John" required />
+              <input type="text" id="firstName" v-model="state.firstName" placeholder="John" required />
             </div>
 
             <div class="form-group">
               <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" v-model="formData.lastName" placeholder="Doe" required />
+              <input type="text" id="lastName" v-model="state.lastName" placeholder="Doe" required />
             </div>
 
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" id="email" v-model="formData.email" placeholder="john@example.com" required />
+              <input type="email" id="email" v-model="state.email" placeholder="john@example.com" required />
             </div>
 
             <div class="form-group">
               <label for="password">Password</label>
               <div class="password-input">
-                <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password"
+                <input :type="showPassword ? 'text' : 'password'" id="password" v-model="state.password"
                   placeholder="Create a strong password" required />
                 <button type="button" class="toggle-password" @click="showPassword = !showPassword"
                   aria-label="Toggle password visibility">
@@ -145,7 +145,7 @@
               <label for="confirmPassword">Confirm Password</label>
               <div class="password-input">
                 <input :type="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
-                  v-model="formData.confirmPassword" placeholder="Confirm your password" required />
+                  v-model="state.confirmPassword" placeholder="Confirm your password" required />
                 <button type="button" class="toggle-password" @click="showConfirmPassword = !showConfirmPassword"
                   aria-label="Toggle confirm password visibility">
                   <svg v-if="!showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -166,13 +166,13 @@
           </div>
 
           <div class="form-checkbox">
-            <input type="checkbox" id="terms" v-model="formData.agreeToTerms" required />
+            <input type="checkbox" id="terms" v-model="state.agreeToTerms" required />
             <label for="terms">
               I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
             </label>
           </div>
 
-          <button type="submit" class="btn-signup">Create Account</button>
+          <button :disabled="v$.$invalid" type="submit" class="btn-signup">Create Account</button>
         </form>
 
         <!-- Footer -->
@@ -185,12 +185,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import useVuelidate from '@vuelidate/core'
+import { email, helpers, minLength, required } from '@vuelidate/validators';
+import { ref, reactive } from 'vue'
 // import { useRouter } from 'vue-router'
 
 // const router = useRouter()
+const hasLowercase = helpers.regex(/[a-z]/);
+const hasUppercase = helpers.regex(/[A-Z]/);
+const hasNumber = helpers.regex(/\d/);
+const hasSpecialChar = helpers.regex(/[@$!%*?&]/);
 
-const formData = ref({
+const state = reactive({
   firstName: '',
   lastName: '',
   email: '',
@@ -199,17 +205,35 @@ const formData = ref({
   agreeToTerms: false
 })
 
+const rules = {
+  firstName: { required },
+  lastName: { required },
+  email: { required, email },
+  password: {
+    required,
+    minLength: minLength(8),
+    hasLowercase,
+    hasUppercase,
+    hasNumber,
+    hasSpecialChar
+  },
+  confirmPassword: '',
+  agreeToTerms: { required }
+}
+
+const v$ = useVuelidate(rules, state)
+
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
 const handleSignup = () => {
-  if (formData.value.password !== formData.value.confirmPassword) {
+  if (state.password !== state.confirmPassword) {
     alert('Passwords do not match!')
     return
   }
 
   // Handle signup logic here
-  console.log('Signup data:', formData.value)
+  console.log('Signup data:', state)
   // router.push('/')
 }
 </script>
